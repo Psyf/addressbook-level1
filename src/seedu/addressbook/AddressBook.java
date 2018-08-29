@@ -115,6 +115,8 @@ public class AddressBook {
     private static final String COMMAND_LIST_DESC = "Displays all persons as a list with index numbers.";
     private static final String COMMAND_LIST_EXAMPLE = COMMAND_LIST_WORD;
 
+    private static final String COMMAND_LIST_EMAIL_WORD = "listEmail";
+
     private static final String COMMAND_DELETE_WORD = "delete";
     private static final String COMMAND_DELETE_DESC = "Deletes a person identified by the index number used in "
                                                     + "the last find/list call.";
@@ -372,6 +374,8 @@ public class AddressBook {
             return executeFindPersons(commandArgs);
         case COMMAND_LIST_WORD:
             return executeListAllPersonsInAddressBook();
+        case COMMAND_LIST_EMAIL_WORD:
+            return executeListAllEmailsInAddressBook();
         case COMMAND_DELETE_WORD:
             return executeDeletePerson(commandArgs);
         case COMMAND_CLEAR_WORD:
@@ -578,6 +582,24 @@ public class AddressBook {
     }
 
     /**
+     *  Displays the list of emails in the address book to the user; in added order.
+     *
+     * @return void
+     */
+    private static String executeListAllEmailsInAddressBook() {
+        ArrayList<String> toBeDisplayed = getAllEmailsInAddressBook();
+
+        String listAsString = "";
+        for (String email : toBeDisplayed) {
+            listAsString += (email + "\n");
+        }
+
+        showToUser(listAsString);
+
+        ArrayList<String[]> emailBandAidFix = new ArrayList<String[]>();//This is a bandaid fix;
+        return getMessageForPersonsDisplayedSummary(emailBandAidFix); //TODO: change with something else later
+    }
+    /**
      * Requests to terminate the program.
      */
     private static void executeExitProgramRequest() {
@@ -615,7 +637,7 @@ public class AddressBook {
 
     /**
      * Shows a message to the user
-     * SAIF: If we don't use varargs, we have to overload showToUsers a LOT of times. 
+     * SAIF: If we don't use varargs, we have to overload showToUsers a LOT of times.
      */
     private static void showToUser(String... message) {
         for (String m : message) {
@@ -805,6 +827,17 @@ public class AddressBook {
      */
     private static ArrayList<String[]> getAllPersonsInAddressBook() {
         return ALL_PERSONS;
+    }
+
+    /**
+     * Returns all emails in the address book
+     */
+    private static ArrayList<String> getAllEmailsInAddressBook() {
+        ArrayList<String> emailList = new ArrayList<String>();
+        for (String[] person : ALL_PERSONS) {
+            emailList.add(getEmailFromPerson(person));
+        }
+        return emailList;
     }
 
     /**
