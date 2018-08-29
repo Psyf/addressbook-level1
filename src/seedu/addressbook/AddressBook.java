@@ -615,6 +615,7 @@ public class AddressBook {
 
     /**
      * Shows a message to the user
+     * SAIF: If we don't use varargs, we have to overload showToUsers a LOT of times. 
      */
     private static void showToUser(String... message) {
         for (String m : message) {
